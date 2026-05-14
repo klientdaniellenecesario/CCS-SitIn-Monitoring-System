@@ -1,0 +1,53 @@
+========================================
+CCS Sit-in Monitoring System
+Installation Guide for New Computer
+========================================
+
+REQUIREMENTS:
+- XAMPP (Apache + MySQL)
+- Any modern web browser (Chrome, Firefox, Edge)
+
+STEP 1: Install XAMPP
+- Download from: https://www.apachefriends.org/
+- Install to default location: C:\xampp\ or D:\xampp\
+
+STEP 2: Copy Project Files
+- Copy the entire "NECESARIO_SitIN" folder to:
+  C:\xampp\htdocs\NECESARIO_SitIN
+  (or wherever your XAMPP is installed)
+
+STEP 3: Import Database
+- Start XAMPP (Apache + MySQL)
+- Open browser: http://localhost/phpmyadmin
+- Click "New" to create database
+- Database name: sitinmonitoring
+- Collation: utf8mb4_general_ci
+- Click "Import" tab
+- Choose file: database_backup.sql
+- Click "Go"
+
+STEP 4: Configure Database Connection
+- Open: config/database.php
+- Verify database credentials:
+  define('DB_HOST', 'localhost');
+  define('DB_USER', 'root');
+  define('DB_PASS', '');
+  define('DB_NAME', 'sitinmonitoring');
+
+STEP 5: Run the Application
+- Start Apache and MySQL in XAMPP
+- Open browser: http://localhost/NECESARIO_SitIN/login.php
+
+DEFAULT LOGINS:
+Student Login:
+- ID Number: 2024-0001
+- Password: password123
+
+Admin Login:
+- Username: admin
+- Password: admin123
+
+TROUBLESHOOTING:
+- Make sure Apache and MySQL are running (green in XAMPP)
+- Check if port 80 is not being used by another program
+- If database error occurs, check database name and credentials
