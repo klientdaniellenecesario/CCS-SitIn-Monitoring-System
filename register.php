@@ -15,18 +15,20 @@ session_start();
     <link rel="stylesheet" href="frontend/register.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
-        /* Additional centering styles */
-        .register-btn {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
+        /* Additional CSS to center the Register button and login link */
+        .registration-form {
             text-align: center;
         }
         
-        .register-btn span {
-            display: inline-block;
+        .register-btn {
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            max-width: 300px;
+            margin: 0 auto;
         }
         
         .login-link {
@@ -39,100 +41,21 @@ session_start();
             margin: 0;
         }
         
-        .login-link a {
-            display: inline-block;
-        }
-        
-        /* ============================================
-           NAVBAR LOGO STYLES - MAKE BIGGER
-           ============================================ */
-        
-        /* Logo container in navbar */
-        .navbar .logo {
+        /* Ensure the button container is centered */
+        .registration-form {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 0.75rem;
         }
         
-        /* Logo image styling */
-        .navbar .logo img {
-            height: 50px;        /* Change this value to make bigger */
-            width: auto;
-            object-fit: contain;
+        /* Make form sections full width while button is centered */
+        .form-section {
+            width: 100%;
         }
         
-        /* Logo icon styling if using icon */
-        .navbar .logo i {
-            font-size: 2.2rem;   /* Change this value to make icon bigger */
-            color: #ffd600;
-        }
-        
-        /* Logo text styling */
-        .navbar .logo span {
-            font-size: 1.1rem;   /* Change this value for text size */
-            font-weight: 600;
-            white-space: nowrap;
-        }
-        
-        /* ============================================
-           CARD LOGO STYLES - MAKE BIGGER
-           ============================================ */
-        
-        /* Card header icon wrapper */
-        .card-header .icon-wrapper {
-            width: 160px;        /* Change this to make container bigger */
-            height: 160px;
-            background: transparent;
-            border-radius: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 1.5rem;
-        }
-        
-        /* Logo image inside card */
-        .card-header .logo-img {
-            width: 160px;        /* Change this to make logo bigger */
-            height: 160px;
-            object-fit: contain;
-        }
-        
-        /* For multiple logos in card */
-        .card-header .logo-img-small {
-            width: 130px;        /* Change this for side-by-side logos */
-            height: 130px;
-            object-fit: contain;
-        }
-        
-        /* Card header icon if using font awesome */
-        .card-header .icon-wrapper i {
-            font-size: 5rem;     /* Change this for icon size */
-            background: linear-gradient(135deg, #ffd600, #ffea8a);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-        }
-        
-        /* Responsive adjustments for mobile */
-        @media (max-width: 768px) {
-            .navbar .logo img {
-                height: 35px;
-            }
-            
-            .navbar .logo span {
-                font-size: 0.85rem;
-                white-space: normal;
-            }
-            
-            .card-header .icon-wrapper {
-                width: 100px;
-                height: 100px;
-            }
-            
-            .card-header .logo-img {
-                width: 100px;
-                height: 100px;
-            }
+        .register-btn {
+            width: 100%;
+            max-width: 350px;
         }
     </style>
 </head>
@@ -142,16 +65,8 @@ session_start();
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <!-- OPTION 1: Use your custom logo image -->
-                    <img src="images/CCS_LOGO.png" alt="CCS Logo" class="navbar-logo-img" style="height: 50px;">
-                    <span>College of Computer Studies Sit-in Monitoring System</span>
-                    
-                    <!-- OPTION 2: If you want to use Font Awesome icon instead -->
-                    <!-- <i class="fas fa-graduation-cap"></i>
-                    <span>College of Computer Studies Sit-in Monitoring System</span> -->
-                    
-                    <!-- OPTION 3: If you want logo only (no text) -->
-                    <!-- <img src="uploads/uc-logo.png" alt="UC Logo" style="height: 50px;"> -->
+                    <img src="images/CCS_LOGO.png" alt="CCS Logo" style="height: 40px; width: auto;">
+                    <span>CCS Sit-in</span>
                 </div>
                 <div class="nav-links">
                     <a href="login.php"><i class="fas fa-home"></i> Home</a>
@@ -170,19 +85,8 @@ session_start();
         <div class="registration-container">
             <div class="registration-card">
                 <div class="card-header">
-                    <!-- LOGO SECTION - NO BORDER, BIGGER -->
                     <div class="icon-wrapper">
-                        <!-- Option 1: Custom logo image -->
-                        <img src="images/UC_LOGO.png" alt="UC Logo" class="logo-img">
-                        
-                        <!-- Option 2: Multiple logos side by side -->
-                        <!-- <div class="logo-group">
-                            <img src="uploads/uc-logo.png" alt="UC Logo" class="logo-img-small">
-                            <img src="uploads/ccs-logo.png" alt="CCS Logo" class="logo-img-small">
-                        </div> -->
-                        
-                        <!-- Option 3: Keep the icon but bigger -->
-                        <!-- <i class="fas fa-user-plus"></i> -->
+                        <i class="fas fa-user-plus"></i>
                     </div>
                     <h1>Sign Up</h1>
                     <p class="subtitle">Join the CCS Sit-in Monitoring System</p>
@@ -301,11 +205,13 @@ session_start();
                         </div>
                     </div>
 
+                    <!-- Register Button - NOW CENTERED -->
                     <button type="submit" class="register-btn">
                         <span>Register</span>
                     </button>
                 </form>
 
+                <!-- Login Link - NOW CENTERED -->
                 <div class="login-link">
                     <p>Already have an account? <a href="login.php">Sign In</a></p>
                 </div>
