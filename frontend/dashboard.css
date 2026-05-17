@@ -1688,3 +1688,76 @@ select.form-control {
         padding: 1rem;
     }
 }
+/* ============================================
+   PC UNAVAILABLE STYLES - Admin Disabled PCs
+   ============================================ */
+
+/* Unavailable PC Tile - Student View */
+.pc-item.unavailable {
+    cursor: not-allowed;
+    opacity: 0.6;
+    background: #fff5f5;
+    border-color: #dc3545;
+}
+
+.pc-icon.unavailable {
+    color: #dc3545;
+}
+
+.pc-status-badge.unavailable {
+    background: #fee;
+    color: #dc3545;
+}
+
+/* Unavailable PC Tile - Admin View (already in admin_reservation.php) */
+.pc-card.unavailable {
+    background: #fff5f5;
+    border-color: #dc3545;
+}
+
+.pc-card.unavailable .pc-icon {
+    color: #dc3545;
+}
+
+.pc-status.unavailable {
+    background: #fee;
+    color: #dc3545;
+}
+
+/* Toggle buttons for PC availability (Admin) */
+.toggle-pc-btn {
+    margin-top: 0.5rem;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    width: 100%;
+    transition: all 0.3s ease;
+}
+
+.disable-btn {
+    background: #dc3545;
+    color: white;
+}
+
+.disable-btn:hover {
+    background: #c82333;
+    transform: translateY(-1px);
+}
+
+.enable-btn {
+    background: #28a745;
+    color: white;
+}
+
+.enable-btn:hover {
+    background: #218838;
+    transform: translateY(-1px);
+}
+
+/* Legend item for unavailable PCs */
+.legend-item .fa-ban {
+    color: #dc3545;
+}

@@ -118,14 +118,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         <nav class="navbar">
             <div class="nav-container">
                 <div class="logo">
-                    <img src="images/CCS_LOGO.png" alt="CCS Logo" style="height: 40px; width: auto;">
+                    <img src="images/CCS_LOGO.png" alt="CCS Logo" style="height: 40px; width: auto; margin-right: 10px;">
+                    <img src="images/UC_LOGO.png" alt="UC Logo" style="height: 40px; width: auto;">
                     <span>CCS Sit-in</span>
                 </div>
                 <div class="nav-links">
-                    <a href="#" class="active"><i class="fas fa-home"></i> Home</a>
-                    <a href="#"><i class="fas fa-users"></i> Community</a>
-                    <a href="#"><i class="fas fa-info-circle"></i> About</a>
-                    <a href="#"><i class="fas fa-sign-in-alt"></i> Login</a>
+                    <a href="index.php"><i class="fas fa-home"></i> Home</a>
+                    <a href="community.php"><i class="fas fa-users"></i> Community</a>
+                    <a href="about.php"><i class="fas fa-info-circle"></i> About</a>
+                    <a href="login.php" class="active"><i class="fas fa-sign-in-alt"></i> Login</a>
                     <a href="register.php"><i class="fas fa-user-plus"></i> Register</a>
                 </div>
                 <div class="mobile-menu">

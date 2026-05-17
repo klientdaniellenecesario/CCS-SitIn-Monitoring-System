@@ -61,36 +61,18 @@ $feedbacks = mysqli_query($conn, $query);
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <a href="admin_dashboard.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_dashboard.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-home"></i><span>Home</span>
-                </a>
-                <a href="admin_search.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_search.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-search"></i><span>Search</span>
-                </a>
-                <a href="admin_students.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_students.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-users"></i><span>Students</span>
-                </a>
-                <a href="admin_sitins.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_sitins.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-clock"></i><span>Sit-in</span>
-                </a>
-                <a href="admin_view_sitins.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_view_sitins.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-eye"></i><span>View Sit-in Records</span>
-                </a>
-                <a href="admin_feedback_reports.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_feedback_reports.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-comment-dots"></i><span>Feedback Reports</span>
-                </a>
-                <a href="admin_reservation.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_reservation.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-calendar-alt"></i><span>Reservation</span>
-                </a>
-                <a href="admin_announcements.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_announcements.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-bullhorn"></i><span>Announcements</span>
-                </a>
-                <a href="admin_add_reward.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_add_reward.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-gift"></i><span>Add Reward</span>
-                </a>
-                <a href="admin_leaderboard.php" class="nav-item <?php echo basename($_SERVER['PHP_SELF']) == 'admin_leaderboard.php' ? 'active' : ''; ?>">
-                    <i class="fas fa-trophy"></i><span>Leaderboard</span>
-                </a>
+                <a href="admin_dashboard.php" class="nav-item "><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="admin_search.php" class="nav-item "><i class="fas fa-search"></i><span>Search</span></a>
+                <a href="admin_students.php" class="nav-item "><i class="fas fa-users"></i><span>Students</span></a>
+                <a href="admin_sitins.php" class="nav-item "><i class="fas fa-clock"></i><span>Sit-in</span></a>
+                <a href="admin_view_sitins.php" class="nav-item "><i class="fas fa-eye"></i><span>View Sit-in Records</span></a>
+                <a href="admin_feedback_reports.php" class="nav-item active"><i class="fas fa-comment-dots"></i><span>Feedback Reports</span></a>
+                <a href="admin_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
+                <a href="admin_announcements.php" class="nav-item"><i class="fas fa-bullhorn"></i><span>Announcements</span></a>
+                <a href="admin_add_reward.php" class="nav-item"><i class="fas fa-gift"></i><span>Add Reward</span></a>
+                <a href="admin_leaderboard.php" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboard</span></a>
+                <a href="admin_reports.php" class="nav-item"><i class="fas fa-chart-line"></i><span>Reports</span></a>
+                <a href="admin_tasks.php" class="nav-item"><i class="fas fa-tasks"></i><span>Tasks</span></a>
                 <a href="../logout.php" class="nav-item logout"><i class="fas fa-sign-out-alt"></i><span>Log out</span></a>
             </nav>
         </aside>

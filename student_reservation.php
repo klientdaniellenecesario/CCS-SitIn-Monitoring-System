@@ -165,6 +165,23 @@ $reservations = mysqli_query($conn, "SELECT * FROM reservations
             opacity: 0.6;
         }
         
+        /* UNAVAILABLE PC STYLES - Added for admin-disabled PCs */
+        .pc-item.unavailable {
+            cursor: not-allowed;
+            opacity: 0.6;
+            background: #fff5f5;
+            border-color: #dc3545;
+        }
+        
+        .pc-icon.unavailable {
+            color: #dc3545;
+        }
+        
+        .pc-status-badge.unavailable {
+            background: #fee;
+            color: #dc3545;
+        }
+        
         .pc-icon {
             font-size: 2rem;
             margin-bottom: 0.25rem;
@@ -254,7 +271,7 @@ $reservations = mysqli_query($conn, "SELECT * FROM reservations
                     <a href="student_notifications.php" class="nav-item"><i class="fas fa-bell"></i><span>Notification</span></a>
                     <a href="student_edit_profile.php" class="nav-item"><i class="fas fa-edit"></i><span>Edit Profile</span></a>
                     <a href="student_history.php" class="nav-item"><i class="fas fa-history"></i><span>History</span></a>
-                    <a href="student_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
+                    <a href="student_reservation.php" class="nav-item active"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
                     <a href="student_rewards.php" class="nav-item"><i class="fas fa-gift"></i><span>Rewards</span></a>
                     <a href="student_leaderboard.php" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboard</span></a>
                     <a href="logout.php" class="nav-item logout" onclick="return confirm('Are you sure you want to logout?')">
@@ -312,6 +329,10 @@ $reservations = mysqli_query($conn, "SELECT * FROM reservations
                         <div class="legend-item">
                             <div class="legend-icon"><i class="fas fa-desktop" style="color: #ffd600;"></i></div>
                             <span>Requested - Pending approval</span>
+                        </div>
+                        <div class="legend-item">
+                            <div class="legend-icon"><i class="fas fa-ban" style="color: #dc3545;"></i></div>
+                            <span>Unavailable - Disabled by Admin</span>
                         </div>
                     </div>
                     
@@ -486,11 +507,18 @@ $reservations = mysqli_query($conn, "SELECT * FROM reservations
                         let onclickAttr = '';
                         let disabledClass = '';
                         
+                        // Check for unavailable status (admin-disabled)
                         if (status.status === 'available') {
                             statusClass = 'available';
                             statusText = 'Available';
                             iconColor = '#0052cc';
                             onclickAttr = `onclick="selectPC('${pcNumber}', '${lab}')"`;
+                        } else if (status.status === 'unavailable') {
+                            statusClass = 'unavailable';
+                            statusText = 'Unavailable';
+                            iconColor = '#dc3545';
+                            disabledClass = 'unavailable';
+                            // No onclick - cannot select
                         } else if (status.status === 'occupied') {
                             statusClass = 'occupied';
                             statusText = 'Occupied';
@@ -513,10 +541,10 @@ $reservations = mysqli_query($conn, "SELECT * FROM reservations
                                 <span class="pc-status-badge ${statusClass}">${statusText}</span>
                         `;
                         
-                        if (status.status === 'occupied' && status.user) {
+                        if ((status.status === 'occupied' || status.status === 'requested') && status.user) {
                             html += `<div class="pc-info-text" title="${status.user}">${status.user.substring(0, 10)}${status.user.length > 10 ? '...' : ''}</div>`;
-                        } else if (status.status === 'requested' && status.user) {
-                            html += `<div class="pc-info-text" title="${status.user}">${status.user.substring(0, 10)}${status.user.length > 10 ? '...' : ''}</div>`;
+                        } else if (status.status === 'unavailable') {
+                            html += `<div class="pc-info-text" title="Disabled by administrator">🚫 Admin disabled</div>`;
                         }
                         
                         html += `</div>`;

@@ -28,6 +28,14 @@ while($row = mysqli_fetch_assoc($reservations_result)) {
     $pending_reservations[$row['pc_number']] = $row;
 }
 
+// Get admin-disabled PCs
+$disabled_pcs = [];
+$disabled_query = "SELECT pc_number, admin_disabled FROM pc_status WHERE lab = '$lab' AND admin_disabled = 1";
+$disabled_result = mysqli_query($conn, $disabled_query);
+while($row = mysqli_fetch_assoc($disabled_result)) {
+    $disabled_pcs[$row['pc_number']] = true;
+}
+
 // Build PC status array
 $pc_status = [];
 for ($i = 1; $i <= 30; $i++) {
@@ -46,6 +54,11 @@ for ($i = 1; $i <= 30; $i++) {
             'user' => $pending_reservations[$pc_number]['first_name'] . ' ' . $pending_reservations[$pc_number]['last_name'],
             'user_id' => $pending_reservations[$pc_number]['user_id'],
             'reservation_id' => $pending_reservations[$pc_number]['id']
+        ];
+    } elseif (isset($disabled_pcs[$pc_number])) {
+        $pc_status[$pc_number] = [
+            'status' => 'unavailable',
+            'admin_disabled' => 1
         ];
     } else {
         $pc_status[$pc_number] = ['status' => 'available'];

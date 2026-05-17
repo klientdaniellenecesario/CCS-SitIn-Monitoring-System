@@ -12,17 +12,20 @@ $admin_name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin';
 $from_date = isset($_GET['from_date']) ? $_GET['from_date'] : date('Y-m-d', strtotime('-30 days'));
 $to_date = isset($_GET['to_date']) ? $_GET['to_date'] : date('Y-m-d');
 $report_type = isset($_GET['report_type']) ? $_GET['report_type'] : 'sitins';
+$lab_filter = isset($_GET['lab']) ? $_GET['lab'] : 'all'; // NEW: lab filter
 
 // Get preview data based on report type
 $preview_data = [];
 $preview_columns = [];
 
 if ($report_type == 'sitins') {
+    $lab_condition = ($lab_filter !== 'all') ? "AND s.sit_lab = '$lab_filter'" : "";
     $query = "SELECT s.id, u.id_number, u.first_name, u.last_name, u.course, 
                      s.purpose, s.sit_lab, s.pc_number, s.session_date, s.time_in, s.time_out, s.duration_minutes
               FROM sit_in_sessions s
               JOIN users u ON s.user_id = u.id
               WHERE DATE(s.session_date) BETWEEN '$from_date' AND '$to_date'
+              $lab_condition
               ORDER BY s.session_date DESC LIMIT 50";
     $result = mysqli_query($conn, $query);
     $preview_columns = ['ID', 'ID Number', 'Student', 'Course', 'Purpose', 'Lab', 'PC', 'Date', 'Time In', 'Time Out', 'Duration'];
@@ -51,22 +54,26 @@ if ($report_type == 'sitins') {
     $result = mysqli_query($conn, $query);
     $preview_columns = ['ID Number', 'Name', 'Course', 'Total Hours', 'Reward Points', 'Tasks Completed'];
 } elseif ($report_type == 'reservations') {
-    $query = "SELECT r.*, u.first_name, u.last_name, u.id_number
+    $lab_condition = ($lab_filter !== 'all') ? "AND r.lab = '$lab_filter'" : "";
+    $query = "SELECT r.id, u.id_number, u.first_name, u.last_name, r.purpose, r.lab, r.pc_number, r.date, r.time_in, r.status, r.created_at
               FROM reservations r
               JOIN users u ON r.user_id = u.id
               WHERE DATE(r.created_at) BETWEEN '$from_date' AND '$to_date'
+              $lab_condition
               ORDER BY r.created_at DESC LIMIT 50";
     $result = mysqli_query($conn, $query);
-    $preview_columns = ['ID', 'ID Number', 'Student', 'Purpose', 'Lab', 'PC', 'Date', 'Time', 'Status'];
+    $preview_columns = ['ID', 'ID Number', 'Student', 'Purpose', 'Lab', 'PC', 'Date', 'Time', 'Status', 'Reserved On'];
 } elseif ($report_type == 'feedback') {
-    $query = "SELECT f.*, u.id_number, u.first_name, u.last_name, s.purpose as sit_purpose
+    $lab_condition = ($lab_filter !== 'all') ? "AND s.sit_lab = '$lab_filter'" : "";
+    $query = "SELECT f.id, u.id_number, u.first_name, u.last_name, s.purpose as sit_purpose, f.message, f.created_at
               FROM feedback f
               JOIN users u ON f.user_id = u.id
               LEFT JOIN sit_in_sessions s ON f.session_id = s.id
               WHERE DATE(f.created_at) BETWEEN '$from_date' AND '$to_date'
+              $lab_condition
               ORDER BY f.created_at DESC LIMIT 50";
     $result = mysqli_query($conn, $query);
-    $preview_columns = ['ID', 'ID Number', 'Student', 'Sit-in Purpose', 'Feedback', 'Submitted'];
+    $preview_columns = ['ID', 'ID Number', 'Student', 'Sit-in Purpose', 'Feedback', 'Submitted On'];
 }
 
 while ($row = mysqli_fetch_assoc($result)) {
@@ -191,6 +198,15 @@ while ($row = mysqli_fetch_assoc($result)) {
             white-space: normal;
             word-wrap: break-word;
         }
+        .lab-info {
+            background: #f0f4ff;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+            font-size: 0.8rem;
+            color: #0052cc;
+            display: inline-block;
+        }
     </style>
 </head>
 <body>
@@ -203,17 +219,18 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <a href="admin_dashboard.php" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="admin_search.php" class="nav-item"><i class="fas fa-search"></i><span>Search</span></a>
-                <a href="admin_students.php" class="nav-item"><i class="fas fa-users"></i><span>Students</span></a>
-                <a href="admin_sitins.php" class="nav-item"><i class="fas fa-clock"></i><span>Sit-in</span></a>
-                <a href="admin_view_sitins.php" class="nav-item"><i class="fas fa-eye"></i><span>View Sit-in Records</span></a>
-                <a href="admin_feedback_reports.php" class="nav-item"><i class="fas fa-comment-dots"></i><span>Feedback Reports</span></a>
-                <a href="admin_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
+                <a href="admin_dashboard.php" class="nav-item "><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="admin_search.php" class="nav-item "><i class="fas fa-search"></i><span>Search</span></a>
+                <a href="admin_students.php" class="nav-item "><i class="fas fa-users"></i><span>Students</span></a>
+                <a href="admin_sitins.php" class="nav-item "><i class="fas fa-clock"></i><span>Sit-in</span></a>
+                <a href="admin_view_sitins.php" class="nav-item "><i class="fas fa-eye"></i><span>View Sit-in Records</span></a>
+                <a href="admin_feedback_reports.php" class="nav-item "><i class="fas fa-comment-dots"></i><span>Feedback Reports</span></a>
+                <a href="admin_reservation.php" class="nav-item "><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
                 <a href="admin_announcements.php" class="nav-item"><i class="fas fa-bullhorn"></i><span>Announcements</span></a>
                 <a href="admin_add_reward.php" class="nav-item"><i class="fas fa-gift"></i><span>Add Reward</span></a>
                 <a href="admin_leaderboard.php" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboard</span></a>
-                <a href="admin_reports.php" class="nav-item active"><i class="fas fa-chart-line"></i><span>Reports</span></a>
+                <a href="admin_reports.php" class="nav-item active" ><i class="fas fa-chart-line"></i><span>Reports</span></a>
+                <a href="admin_tasks.php" class="nav-item"><i class="fas fa-tasks"></i><span>Tasks</span></a>
                 <a href="../logout.php" class="nav-item logout"><i class="fas fa-sign-out-alt"></i><span>Log out</span></a>
             </nav>
         </aside>
@@ -250,6 +267,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <option value="feedback" <?php echo $report_type == 'feedback' ? 'selected' : ''; ?>>Feedback Summary</option>
                             </select>
                         </div>
+                        <!-- NEW: Lab Filter Dropdown -->
+                        <div class="filter-group">
+                            <label>Lab</label>
+                            <select name="lab" id="lab_filter">
+                                <option value="all" <?php echo $lab_filter == 'all' ? 'selected' : ''; ?>>All Labs</option>
+                                <option value="524" <?php echo $lab_filter == '524' ? 'selected' : ''; ?>>Lab 524</option>
+                                <option value="525" <?php echo $lab_filter == '525' ? 'selected' : ''; ?>>Lab 525</option>
+                                <option value="526" <?php echo $lab_filter == '526' ? 'selected' : ''; ?>>Lab 526</option>
+                                <option value="527" <?php echo $lab_filter == '527' ? 'selected' : ''; ?>>Lab 527</option>
+                            </select>
+                        </div>
                         <div class="filter-group" style="flex: 0.5;">
                             <button type="submit" style="background: linear-gradient(135deg, #0052cc, #0066ff); color: white; border: none; padding: 0.6rem 1.5rem; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%;">
                                 <i class="fas fa-sync-alt"></i> Apply
@@ -257,6 +285,13 @@ while ($row = mysqli_fetch_assoc($result)) {
                         </div>
                     </div>
                 </form>
+                
+                <!-- Display current lab filter info -->
+                <?php if ($lab_filter !== 'all'): ?>
+                <div class="lab-info">
+                    <i class="fas fa-flask"></i> Currently filtering by: <strong>Lab <?php echo htmlspecialchars($lab_filter); ?></strong>
+                </div>
+                <?php endif; ?>
                 
                 <div class="export-buttons">
                     <button class="btn-export btn-csv" onclick="exportReport('csv')">
@@ -309,12 +344,14 @@ while ($row = mysqli_fetch_assoc($result)) {
     <script>
         function exportReport(format) {
             const form = document.getElementById('reportForm');
-            const actionUrl = `../backend/export_report.php?format=${format}`;
-            form.action = actionUrl;
-            form.target = '_blank';
-            form.submit();
-            form.action = '';
-            form.target = '';
+            // Get all filter values
+            const from_date = document.querySelector('input[name="from_date"]').value;
+            const to_date = document.querySelector('input[name="to_date"]').value;
+            const report_type = document.querySelector('select[name="report_type"]').value;
+            const lab = document.querySelector('select[name="lab"]').value;
+            
+            // Redirect to export handler with all parameters
+            window.location.href = `../backend/export_report.php?format=${format}&from_date=${from_date}&to_date=${to_date}&report_type=${report_type}&lab=${lab}`;
         }
     </script>
 </body>
