@@ -154,7 +154,7 @@ $reward_sessions = mysqli_query($conn, "SELECT * FROM student_rewards WHERE user
                     <a href="student_edit_profile.php" class="nav-item"><i class="fas fa-edit"></i><span>Edit Profile</span></a>
                     <a href="student_history.php" class="nav-item"><i class="fas fa-history"></i><span>History</span></a>
                     <a href="student_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
-                    <a href="student_rewards.php" class="nav-item"><i class="fas fa-gift"></i><span>Rewards</span></a>
+                    <a href="student_rewards.php" class="nav-item active"><i class="fas fa-gift"></i><span>Rewards</span></a>
                     <a href="student_leaderboard.php" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboard</span></a>
                     <a href="logout.php" class="nav-item logout" onclick="return confirm('Are you sure you want to logout?')">
                         <i class="fas fa-sign-out-alt"></i><span>Log out</span>

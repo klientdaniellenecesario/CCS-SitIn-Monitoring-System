@@ -259,7 +259,7 @@ $unread_count = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) as count
             </div>
                 <nav class="sidebar-nav">
                     <a href="student_dashboard.php" class="nav-item"><i class="fas fa-tachometer-alt"></i><span>Dashboard</span></a>
-                    <a href="student_notifications.php" class="nav-item"><i class="fas fa-bell"></i><span>Notification</span></a>
+                    <a href="student_notifications.php" class="nav-item active"><i class="fas fa-bell"></i><span>Notification</span></a>
                     <a href="student_edit_profile.php" class="nav-item"><i class="fas fa-edit"></i><span>Edit Profile</span></a>
                     <a href="student_history.php" class="nav-item"><i class="fas fa-history"></i><span>History</span></a>
                     <a href="student_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
