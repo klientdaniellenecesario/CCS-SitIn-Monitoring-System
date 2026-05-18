@@ -12,7 +12,7 @@ $admin_name = isset($_SESSION['user_name']) ? $_SESSION['user_name'] : 'Admin';
 $from_date = isset($_GET['from_date']) ? $_GET['from_date'] : date('Y-m-d', strtotime('-30 days'));
 $to_date = isset($_GET['to_date']) ? $_GET['to_date'] : date('Y-m-d');
 $report_type = isset($_GET['report_type']) ? $_GET['report_type'] : 'sitins';
-$lab_filter = isset($_GET['lab']) ? $_GET['lab'] : 'all'; // NEW: lab filter
+$lab_filter = isset($_GET['lab']) ? $_GET['lab'] : 'all';
 
 // Get preview data based on report type
 $preview_data = [];
@@ -154,6 +154,7 @@ while ($row = mysqli_fetch_assoc($result)) {
             gap: 0.5rem;
             border: none;
             font-family: 'Inter', sans-serif;
+            text-decoration: none;
         }
         .btn-csv {
             background: linear-gradient(135deg, #0052cc, #0066ff);
@@ -219,17 +220,17 @@ while ($row = mysqli_fetch_assoc($result)) {
                 </div>
             </div>
             <nav class="sidebar-nav">
-                <a href="admin_dashboard.php" class="nav-item "><i class="fas fa-home"></i><span>Home</span></a>
-                <a href="admin_search.php" class="nav-item "><i class="fas fa-search"></i><span>Search</span></a>
-                <a href="admin_students.php" class="nav-item "><i class="fas fa-users"></i><span>Students</span></a>
-                <a href="admin_sitins.php" class="nav-item "><i class="fas fa-clock"></i><span>Sit-in</span></a>
-                <a href="admin_view_sitins.php" class="nav-item "><i class="fas fa-eye"></i><span>View Sit-in Records</span></a>
-                <a href="admin_feedback_reports.php" class="nav-item "><i class="fas fa-comment-dots"></i><span>Feedback Reports</span></a>
-                <a href="admin_reservation.php" class="nav-item "><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
+                <a href="admin_dashboard.php" class="nav-item"><i class="fas fa-home"></i><span>Home</span></a>
+                <a href="admin_search.php" class="nav-item"><i class="fas fa-search"></i><span>Search</span></a>
+                <a href="admin_students.php" class="nav-item"><i class="fas fa-users"></i><span>Students</span></a>
+                <a href="admin_sitins.php" class="nav-item"><i class="fas fa-clock"></i><span>Sit-in</span></a>
+                <a href="admin_view_sitins.php" class="nav-item"><i class="fas fa-eye"></i><span>View Sit-in Records</span></a>
+                <a href="admin_feedback_reports.php" class="nav-item"><i class="fas fa-comment-dots"></i><span>Feedback Reports</span></a>
+                <a href="admin_reservation.php" class="nav-item"><i class="fas fa-calendar-alt"></i><span>Reservation</span></a>
                 <a href="admin_announcements.php" class="nav-item"><i class="fas fa-bullhorn"></i><span>Announcements</span></a>
                 <a href="admin_add_reward.php" class="nav-item"><i class="fas fa-gift"></i><span>Add Reward</span></a>
                 <a href="admin_leaderboard.php" class="nav-item"><i class="fas fa-trophy"></i><span>Leaderboard</span></a>
-                <a href="admin_reports.php" class="nav-item active" ><i class="fas fa-chart-line"></i><span>Reports</span></a>
+                <a href="admin_reports.php" class="nav-item active"><i class="fas fa-chart-line"></i><span>Reports</span></a>
                 <a href="admin_tasks.php" class="nav-item"><i class="fas fa-tasks"></i><span>Tasks</span></a>
                 <a href="../logout.php" class="nav-item logout"><i class="fas fa-sign-out-alt"></i><span>Log out</span></a>
             </nav>
@@ -251,11 +252,11 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <div class="filter-row">
                         <div class="filter-group">
                             <label>From Date</label>
-                            <input type="date" name="from_date" value="<?php echo $from_date; ?>">
+                            <input type="date" name="from_date" id="from_date" value="<?php echo $from_date; ?>">
                         </div>
                         <div class="filter-group">
                             <label>To Date</label>
-                            <input type="date" name="to_date" value="<?php echo $to_date; ?>">
+                            <input type="date" name="to_date" id="to_date" value="<?php echo $to_date; ?>">
                         </div>
                         <div class="filter-group">
                             <label>Report Type</label>
@@ -267,7 +268,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                                 <option value="feedback" <?php echo $report_type == 'feedback' ? 'selected' : ''; ?>>Feedback Summary</option>
                             </select>
                         </div>
-                        <!-- NEW: Lab Filter Dropdown -->
                         <div class="filter-group">
                             <label>Lab</label>
                             <select name="lab" id="lab_filter">
@@ -286,7 +286,6 @@ while ($row = mysqli_fetch_assoc($result)) {
                     </div>
                 </form>
                 
-                <!-- Display current lab filter info -->
                 <?php if ($lab_filter !== 'all'): ?>
                 <div class="lab-info">
                     <i class="fas fa-flask"></i> Currently filtering by: <strong>Lab <?php echo htmlspecialchars($lab_filter); ?></strong>
@@ -300,9 +299,18 @@ while ($row = mysqli_fetch_assoc($result)) {
                     <button class="btn-export btn-doc" onclick="exportReport('doc')">
                         <i class="fab fa-microsoft-word"></i> Export as DOC
                     </button>
-                    <button class="btn-export btn-pdf" onclick="exportReport('pdf')">
-                        <i class="fas fa-file-pdf"></i> Export as PDF
-                    </button>
+                    
+                    <!-- PDF Export Form - Uses POST method for auto-download -->
+                    <form method="POST" action="../backend/export_report.php" style="display: inline;" id="pdfForm">
+                        <input type="hidden" name="format" value="pdf">
+                        <input type="hidden" name="report_type" id="pdf_report_type" value="<?php echo $report_type; ?>">
+                        <input type="hidden" name="from_date" id="pdf_from_date" value="<?php echo $from_date; ?>">
+                        <input type="hidden" name="to_date" id="pdf_to_date" value="<?php echo $to_date; ?>">
+                        <input type="hidden" name="lab" id="pdf_lab" value="<?php echo $lab_filter; ?>">
+                        <button type="submit" class="btn-export btn-pdf">
+                            <i class="fas fa-file-pdf"></i> Export as PDF
+                        </button>
+                    </form>
                 </div>
             </div>
 
@@ -343,16 +351,40 @@ while ($row = mysqli_fetch_assoc($result)) {
 
     <script>
         function exportReport(format) {
-            const form = document.getElementById('reportForm');
-            // Get all filter values
-            const from_date = document.querySelector('input[name="from_date"]').value;
-            const to_date = document.querySelector('input[name="to_date"]').value;
-            const report_type = document.querySelector('select[name="report_type"]').value;
-            const lab = document.querySelector('select[name="lab"]').value;
+            const from_date = document.getElementById('from_date').value;
+            const to_date = document.getElementById('to_date').value;
+            const report_type = document.getElementById('report_type').value;
+            const lab = document.getElementById('lab_filter').value;
             
-            // Redirect to export handler with all parameters
             window.location.href = `../backend/export_report.php?format=${format}&from_date=${from_date}&to_date=${to_date}&report_type=${report_type}&lab=${lab}`;
         }
+        
+        // Sync PDF form hidden fields with current filter values
+        function syncPdfFilters() {
+            const reportType = document.getElementById('report_type');
+            const fromDate = document.getElementById('from_date');
+            const toDate = document.getElementById('to_date');
+            const labFilter = document.getElementById('lab_filter');
+            
+            if (reportType) document.getElementById('pdf_report_type').value = reportType.value;
+            if (fromDate) document.getElementById('pdf_from_date').value = fromDate.value;
+            if (toDate) document.getElementById('pdf_to_date').value = toDate.value;
+            if (labFilter) document.getElementById('pdf_lab').value = labFilter.value;
+        }
+        
+        // Add event listeners to filter inputs
+        const reportTypeSelect = document.getElementById('report_type');
+        const fromDateInput = document.getElementById('from_date');
+        const toDateInput = document.getElementById('to_date');
+        const labFilterSelect = document.getElementById('lab_filter');
+        
+        if (reportTypeSelect) reportTypeSelect.addEventListener('change', syncPdfFilters);
+        if (fromDateInput) fromDateInput.addEventListener('change', syncPdfFilters);
+        if (toDateInput) toDateInput.addEventListener('change', syncPdfFilters);
+        if (labFilterSelect) labFilterSelect.addEventListener('change', syncPdfFilters);
+        
+        // Sync on page load
+        syncPdfFilters();
     </script>
 </body>
 </html>
